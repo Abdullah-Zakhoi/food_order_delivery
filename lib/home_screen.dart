@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_order_delivery/model/food_product.dart';
 import 'package:food_order_delivery/product_screen.dart';
+import 'package:food_order_delivery/provider/firebase_auth_provider.dart';
+import 'package:food_order_delivery/provider/number_of_orders.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -53,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: Colors.white,
+        color: Color(0xFFFAF9FA),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -121,15 +124,50 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: _bottomNavigationBar(),
-      floatingActionButton: new FloatingActionButton(
-        backgroundColor: Color(0xFFFFCC2E),
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: new Icon(
-          Icons.shopping_cart,
-          color: Colors.black,
+      floatingActionButton: Container(
+        height: 80,
+        width: 60,
+        child: Stack(
+          children: [
+            Positioned(
+              bottom: 15,
+              left: 2,
+              child: FloatingActionButton(
+                backgroundColor: Color(0xFFFFCC2E),
+                onPressed: () {},
+                tooltip: 'Increment',
+                child: new Icon(
+                  Icons.shopping_cart,
+                  color: Colors.black,
+                ),
+                elevation: 5.0,
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                width: 30,
+                height: 30,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white, width: 4),
+                  color: Color(0xFFFFCC2E),
+                  shape: BoxShape.circle,
+                ),
+                child: Consumer<NumbersOfOrdersProvider>(
+                  builder: (context, numbersOfOrders, child) {
+                    return Center(
+                      child: Text(
+                        '${numbersOfOrders.ordersNumber}',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
-        elevation: 5.0,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -324,7 +362,11 @@ class _HomePageState extends State<HomePage> {
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.white,
-      title: Text('Food delivery'),
+      title: Text(
+        'Food delivery',
+        style: TextStyle(
+            color: Colors.black87, fontSize: 24, fontWeight: FontWeight.bold),
+      ),
       leading: IconButton(
           padding: const EdgeInsets.only(left: 18),
           icon: Image.asset('images/more icon.png'),
@@ -345,7 +387,8 @@ class _HomePageState extends State<HomePage> {
                   right: 5,
                   child: GestureDetector(
                     onTap: () {
-                      final authResult = FirebaseAuth.instance.signOut();
+                      Provider.of<FirebaseAuthProvider>(context, listen: false)
+                          .signOut();
                     },
                     child: Image.asset('images/profile icon.png',
                         height: 40, width: 40),

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:food_order_delivery/model/food_product.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:food_order_delivery/provider/number_of_orders.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
   ProductPage(this.itemOfFood);
-  FoodProduct itemOfFood;
+  final FoodProduct itemOfFood;
 
   @override
   _ProductPageState createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
-  int numberOfOrder = 3;
-
+  // int numberOfOrder = 3;
+  int amountOfFood = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +39,34 @@ class _ProductPageState extends State<ProductPage> {
           ),
         ),
       ),
+      floatingActionButton: Container(
+        // decoration: BoxDecoration(
+        //   border: Border.all(color: Colors.grey[300], width: 4),
+        //   // color: Colors.white,
+        //   shape: BoxShape.circle,
+        // ),
+        child: new FloatingActionButton(
+          backgroundColor: Color(0xFFFFCC2E),
+          onPressed: () {
+            Provider.of<NumbersOfOrdersProvider>(context, listen: false)
+                .increaseOrderNumber();
+            Provider.of<NumbersOfOrdersProvider>(context, listen: false)
+                .calculateTotalPrice(
+                    amountOfFood, double.parse(widget.itemOfFood.price));
+            print(Provider.of<NumbersOfOrdersProvider>(context, listen: false)
+                .totalPrice);
+          },
+          child: Container(
+            child: new Icon(
+              Icons.add,
+              size: 32,
+              color: Colors.black,
+            ),
+          ),
+          elevation: 7.0,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -145,7 +175,7 @@ class _ProductPageState extends State<ProductPage> {
   Container counterContainer() {
     return Container(
       height: 40,
-      width: 100,
+      width: 130,
       decoration: BoxDecoration(
         color: Color(0xFFF0C143),
         borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -156,14 +186,23 @@ class _ProductPageState extends State<ProductPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Icon(
-              Icons.remove,
-              size: 28,
-              color: Colors.grey[900],
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (amountOfFood > 1) {
+                    amountOfFood--;
+                  }
+                });
+              },
+              child: Icon(
+                Icons.remove,
+                size: 28,
+                color: Colors.grey[900],
+              ),
             ),
             SizedBox(width: 3),
             Text(
-              '1',
+              amountOfFood.toString(),
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
@@ -171,10 +210,17 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ),
             SizedBox(width: 3),
-            Icon(
-              Icons.add,
-              size: 28,
-              color: Colors.grey[900],
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  amountOfFood++;
+                });
+              },
+              child: Icon(
+                Icons.add,
+                size: 28,
+                color: Colors.grey[900],
+              ),
             ),
           ],
         ),
@@ -201,10 +247,6 @@ class _ProductPageState extends State<ProductPage> {
           child: Container(
             height: 50,
             width: 40,
-
-//            decoration: BoxDecoration(
-//                borderRadius: BorderRadius.all(Radius.circular(5)),
-//                border: Border.all(color: Colors.grey)),
             child: Stack(
               children: [
                 Positioned(
@@ -217,10 +259,15 @@ class _ProductPageState extends State<ProductPage> {
                       height: 22,
                       width: 22,
                       child: Center(
-                          child: Text(
-                        numberOfOrder.toString(),
-                        style: TextStyle(color: Colors.black),
-                      )),
+                        child: Consumer<NumbersOfOrdersProvider>(
+                          builder: (context, numbersOfOrders, child) {
+                            return Text(
+                              '${numbersOfOrders.ordersNumber}',
+                              style: TextStyle(color: Colors.black),
+                            );
+                          },
+                        ),
+                      ),
                     )),
                 Positioned(
                   bottom: 0,

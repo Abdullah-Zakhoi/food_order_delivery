@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_order_delivery/provider/firebase_auth_provider.dart';
+import 'package:food_order_delivery/provider/number_of_orders.dart';
 import 'package:food_order_delivery/reset_password.dart';
+import 'package:provider/provider.dart';
 import 'login_screen_widgets/logo_part.dart';
 
 class LogInPage extends StatefulWidget {
@@ -23,60 +26,6 @@ class _LogInPageState extends State<LogInPage> {
     });
     _emailController.clear();
     _passwordController.clear();
-  }
-
-  void createUser(String email, String password) async {
-    try {
-      final authResult = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  void signInUser(String email, String password) async {
-    try {
-      final authResult = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  void resetPassword(String email) async {
-    try {
-      final authResult =
-          await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  void signOut() async {
-    try {
-      final authResult = await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void _submit() async {
-    print(isLogIn);
-    isLogIn == true
-        ? signInUser(_emailController.text, _passwordController.text)
-        : createUser(_emailController.text, _passwordController.text);
   }
 
   @override
@@ -166,7 +115,21 @@ class _LogInPageState extends State<LogInPage> {
                         child: RaisedButton(
                           color: Colors.orange,
                           textColor: Colors.white,
-                          onPressed: isFilled ? _submit : null,
+                          onPressed: () {
+                            if (isFilled) {
+                              if (isLogIn == true) {
+                                Provider.of<FirebaseAuthProvider>(context,
+                                        listen: false)
+                                    .signInUser(_emailController.text,
+                                        _passwordController.text);
+                              } else {
+                                Provider.of<FirebaseAuthProvider>(context,
+                                        listen: false)
+                                    .createUser(_emailController.text,
+                                        _passwordController.text);
+                              }
+                            }
+                          },
                           child: Text(textOfButton,
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w700)),
@@ -189,9 +152,9 @@ class _LogInPageState extends State<LogInPage> {
       textInputAction: TextInputAction.done,
       focusNode: passwordFocus,
       obscureText: true,
-      onEditingComplete: () {
-        _submit();
-      },
+      // onEditingComplete: () {
+      //   _submit();
+      // },
       onChanged: (password) {
         setState(() {});
       },

@@ -1,20 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_order_delivery/provider/firebase_auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class ResetPassword extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    void resetPassword(String email) async {
-      try {
-        final authResult =
-            await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      } catch (e) {
-        print(e.toString());
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
@@ -46,7 +39,8 @@ class ResetPassword extends StatelessWidget {
                     color: Colors.orange,
                     textColor: Colors.white,
                     onPressed: () {
-                      resetPassword(_emailController.text);
+                      Provider.of<FirebaseAuthProvider>(context, listen: false)
+                          .resetPassword(_emailController.text);
                     },
                     child: Text('Reset Password',
                         style: TextStyle(

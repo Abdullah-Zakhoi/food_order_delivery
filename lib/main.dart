@@ -1,3 +1,7 @@
+import 'package:food_order_delivery/provider/firebase_auth_provider.dart';
+import 'package:food_order_delivery/provider/number_of_orders.dart';
+import 'package:provider/provider.dart';
+
 import 'landing_screen.dart';
 import 'login_screen.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
-  runApp(MainApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => NumbersOfOrdersProvider()),
+      ChangeNotifierProvider(create: (context) => FirebaseAuthProvider()),
+    ],
+    child: MainApp(),
+  ));
 }
 
 class App extends StatelessWidget {
