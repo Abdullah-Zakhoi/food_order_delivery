@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_order_delivery/cart_screen.dart';
 import 'package:food_order_delivery/model/food_product.dart';
 import 'package:food_order_delivery/product_screen.dart';
 import 'package:food_order_delivery/provider/firebase_auth_provider.dart';
@@ -134,7 +135,11 @@ class _HomePageState extends State<HomePage> {
               left: 2,
               child: FloatingActionButton(
                 backgroundColor: Color(0xFFFFCC2E),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => CartPage()),
+                  );
+                },
                 tooltip: 'Increment',
                 child: new Icon(
                   Icons.shopping_cart,

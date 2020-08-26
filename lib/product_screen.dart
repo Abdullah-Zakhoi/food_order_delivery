@@ -4,6 +4,8 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:food_order_delivery/provider/number_of_orders.dart';
 import 'package:provider/provider.dart';
 
+import 'cart_screen.dart';
+
 class ProductPage extends StatefulWidget {
   ProductPage(this.itemOfFood);
   final FoodProduct itemOfFood;
@@ -273,7 +275,11 @@ class _ProductPageState extends State<ProductPage> {
                   bottom: 0,
                   left: 0,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => CartPage()),
+                      );
+                    },
                     child: Icon(
                       Icons.shopping_cart,
                       size: 22,
