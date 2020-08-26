@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>680008443367-4ruocetoevpa3q4j222dqn57kcblqif7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.680008443367-4ruocetoevpa3q4j222dqn57kcblqif7</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBAwZ5m_0xG7CxqvetWaGtBdPCXUJWKZLE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>680008443367</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.programmingwithabdullah.foodOrderDelivery</string>
+	<key>PROJECT_ID</key>
+	<string>food-order-delivery-9ac79</string>
+	<key>STORAGE_BUCKET</key>
+	<string>food-order-delivery-9ac79.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:680008443367:ios:ed2556b6e9b7d7737ec942</string>
+	<key>DATABASE_URL</key>
+	<string>https://food-order-delivery-9ac79.firebaseio.com</string>
+</dict>
+</plist>
